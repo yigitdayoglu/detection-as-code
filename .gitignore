@@ -1,0 +1,15 @@
+# Secrets - asla commit edilmemeli
+.env
+*.pem
+*.key
+credentials*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editor ve OS
+.DS_Store
+.vscode/
+.idea/
