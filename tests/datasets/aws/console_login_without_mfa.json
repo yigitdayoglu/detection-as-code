@@ -1,0 +1,58 @@
+{
+  "rule_id": "aws-console-login-no-mfa",
+  "description": "Test cases for AWS console login without MFA detection",
+  "cases": [
+    {
+      "name": "iam_user_login_without_mfa",
+      "expect_match": true,
+      "event": {
+        "eventTime": "2026-07-20T03:14:07Z",
+        "eventName": "ConsoleLogin",
+        "userIdentity": { "type": "IAMUser", "userName": "victim-user" },
+        "sourceIPAddress": "198.51.100.42",
+        "awsRegion": "us-east-1",
+        "responseElements": { "ConsoleLogin": "Success" },
+        "additionalEventData": { "MFAUsed": "No" }
+      }
+    },
+    {
+      "name": "iam_user_login_with_mfa",
+      "expect_match": false,
+      "event": {
+        "eventTime": "2026-07-20T08:22:31Z",
+        "eventName": "ConsoleLogin",
+        "userIdentity": { "type": "IAMUser", "userName": "normal-user" },
+        "sourceIPAddress": "198.51.100.10",
+        "awsRegion": "us-east-1",
+        "responseElements": { "ConsoleLogin": "Success" },
+        "additionalEventData": { "MFAUsed": "Yes" }
+      }
+    },
+    {
+      "name": "sso_login_without_mfa_field",
+      "expect_match": false,
+      "event": {
+        "eventTime": "2026-07-20T09:05:12Z",
+        "eventName": "ConsoleLogin",
+        "userIdentity": { "type": "AssumedRole", "userName": "sso-engineer" },
+        "sourceIPAddress": "198.51.100.77",
+        "awsRegion": "eu-west-1",
+        "responseElements": { "ConsoleLogin": "Success" },
+        "additionalEventData": { "MFAUsed": "No" }
+      }
+    },
+    {
+      "name": "failed_login_attempt",
+      "expect_match": false,
+      "event": {
+        "eventTime": "2026-07-20T03:13:55Z",
+        "eventName": "ConsoleLogin",
+        "userIdentity": { "type": "IAMUser", "userName": "victim-user" },
+        "sourceIPAddress": "198.51.100.42",
+        "awsRegion": "us-east-1",
+        "responseElements": { "ConsoleLogin": "Failure" },
+        "additionalEventData": { "MFAUsed": "No" }
+      }
+    }
+  ]
+}
