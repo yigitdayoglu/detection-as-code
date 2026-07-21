@@ -1,0 +1,30 @@
+id: aws-root-account-usage
+name: AWS Root Account Usage
+description: >
+  Detects any activity performed by the AWS account root user. Root should
+  be used only for a handful of account-management tasks; routine root
+  usage is a strong indicator of compromise or poor operational practice.
+severity: critical
+status: experimental
+author: Yigit Dayoglu
+created: 2026-07-21
+logsource:
+  product: aws
+  service: cloudtrail
+mitre_attack:
+  tactic: TA0004            # Privilege Escalation
+  technique: T1078.004      # Valid Accounts: Cloud Accounts
+false_positives:
+  - Initial account setup tasks that legitimately require the root user
+  - Billing or support actions that can only be performed as root
+references:
+  - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+schedule: "*/10 * * * *"
+query: |
+  SELECT
+    eventTime,
+    eventName,
+    sourceIPAddress   AS source_ip,
+    awsRegion         AS region
+  FROM aws_cloudtrail
+  WHERE userIdentity.type = 'Root'
