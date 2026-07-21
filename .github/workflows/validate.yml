@@ -2,11 +2,6 @@ name: Validate Detections
 
 on:
   pull_request:
-    paths:
-      - 'detections/**'
-      - 'tests/**'
-      - 'scripts/**'
-      - 'requirements.txt'
 
 jobs:
   validate:
