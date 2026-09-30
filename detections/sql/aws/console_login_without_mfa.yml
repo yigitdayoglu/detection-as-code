@@ -1,0 +1,33 @@
+id: aws-console-login-no-mfa
+name: AWS Console Login Without MFA
+description: >
+  Detects successful AWS Management Console logins by IAM users
+  without multi-factor authentication. Federated/SSO logins are
+  excluded because their MFA is enforced at the identity provider.
+severity: high
+status: experimental
+author: Yigit Dayoglu
+created: 2026-07-20
+logsource:
+  product: aws
+  service: cloudtrail
+mitre_attack:
+  tactic: TA0001            # Initial Access
+  technique: T1078.004      # Valid Accounts: Cloud Accounts
+false_positives:
+  - Break-glass emergency accounts intentionally exempt from MFA
+  - Newly created IAM users logging in before MFA enrollment
+references:
+  - https://attack.mitre.org/techniques/T1078/004/
+schedule: "*/10 * * * *"
+query: |
+  SELECT
+    eventTime,
+    userIdentity.userName   AS user_name,
+    sourceIPAddress         AS source_ip,
+    awsRegion               AS region
+  FROM aws_cloudtrail
+  WHERE eventName = 'ConsoleLogin'
+    AND responseElements.ConsoleLogin = 'Success'
+    AND additionalEventData.MFAUsed != 'Yes'
+    AND userIdentity.type = 'IAMUser'

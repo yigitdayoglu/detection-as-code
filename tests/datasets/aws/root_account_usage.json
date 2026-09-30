@@ -1,0 +1,39 @@
+{
+  "rule_id": "aws-root-account-usage",
+  "description": "Test cases for AWS root account usage detection",
+  "cases": [
+    {
+      "name": "root_console_login",
+      "expect_match": true,
+      "event": {
+        "eventTime": "2026-07-21T02:11:00Z",
+        "eventName": "ConsoleLogin",
+        "userIdentity": { "type": "Root" },
+        "sourceIPAddress": "203.0.113.9",
+        "awsRegion": "us-east-1"
+      }
+    },
+    {
+      "name": "root_creates_access_key",
+      "expect_match": true,
+      "event": {
+        "eventTime": "2026-07-21T02:12:30Z",
+        "eventName": "CreateAccessKey",
+        "userIdentity": { "type": "Root" },
+        "sourceIPAddress": "203.0.113.9",
+        "awsRegion": "us-east-1"
+      }
+    },
+    {
+      "name": "regular_iam_user_action",
+      "expect_match": false,
+      "event": {
+        "eventTime": "2026-07-21T10:00:00Z",
+        "eventName": "CreateAccessKey",
+        "userIdentity": { "type": "IAMUser", "userName": "devops-alice" },
+        "sourceIPAddress": "198.51.100.20",
+        "awsRegion": "us-east-1"
+      }
+    }
+  ]
+}
