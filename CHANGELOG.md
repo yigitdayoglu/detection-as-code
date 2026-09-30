@@ -6,7 +6,7 @@ project uses [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`,
 where a new detection is a MINOR bump, a fix to an existing detection is a
 PATCH, and a breaking change to the pipeline or rule schema is a MAJOR bump.
 
-## [0.1.0] - 2026-07-21
+## [0.1.0] - 2026-09-30
 
 ### Added
 - AWS Console Login Without MFA detection (SQL and Sigma), excluding federated
