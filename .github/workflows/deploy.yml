@@ -27,4 +27,10 @@ jobs:
       - name: Deploy rules to RunReveal
         env:
           RUNREVEAL_TOKEN: ${{ secrets.RUNREVEAL_TOKEN }}
-        run: python scripts/deploy_rules.py --apply
+        run: |
+          if [ -z "$RUNREVEAL_TOKEN" ]; then
+            echo "::notice title=Dry run::RUNREVEAL_TOKEN is not configured for the production environment. Showing the deployment plan without applying it."
+            python scripts/deploy_rules.py
+          else
+            python scripts/deploy_rules.py --apply
+          fi

@@ -150,7 +150,8 @@ On merge to `main`, `deploy.yml` runs against a GitHub `production` environment.
 The RunReveal API token lives in that environment as a secret, is injected into
 the job at runtime, and is masked in logs. It never appears in source code. To
 actually push changes, the deploy tool requires the `--apply` flag; its default
-is a dry run.
+is a dry run. If the secret is not configured (for example in a fork), the
+workflow prints the deployment plan instead of failing.
 
 ## Versioning and releases
 
